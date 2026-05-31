@@ -1,0 +1,28 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+build/
+dist/
+.venv/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+
+# uv
+# uv.lock is committed; the environment is not.
+
+# Julia
+/julia/**/Manifest.toml
+*.jl.cov
+*.jl.*.cov
+*.jl.mem
+
+# Generated artifacts (examples write here)
+/examples/outputs/
+
+# Editor / OS
+.DS_Store
+.idea/
+.vscode/

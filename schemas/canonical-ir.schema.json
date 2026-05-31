@@ -1,0 +1,529 @@
+{
+  "$defs": {
+    "Call": {
+      "description": "An operator or function applied to argument expressions.",
+      "properties": {
+        "kind": {
+          "const": "call",
+          "default": "call",
+          "title": "Kind",
+          "type": "string"
+        },
+        "op": {
+          "title": "Op",
+          "type": "string"
+        },
+        "args": {
+          "items": {
+            "discriminator": {
+              "mapping": {
+                "call": "#/$defs/Call",
+                "num": "#/$defs/Num",
+                "sym": "#/$defs/Sym"
+              },
+              "propertyName": "kind"
+            },
+            "oneOf": [
+              {
+                "$ref": "#/$defs/Num"
+              },
+              {
+                "$ref": "#/$defs/Sym"
+              },
+              {
+                "$ref": "#/$defs/Call"
+              }
+            ]
+          },
+          "title": "Args",
+          "type": "array"
+        }
+      },
+      "required": [
+        "op"
+      ],
+      "title": "Call",
+      "type": "object"
+    },
+    "DiffEq": {
+      "additionalProperties": false,
+      "description": "A differential equation ``d(state)/dt = rhs``.",
+      "properties": {
+        "state": {
+          "title": "State",
+          "type": "string"
+        },
+        "rhs": {
+          "discriminator": {
+            "mapping": {
+              "call": "#/$defs/Call",
+              "num": "#/$defs/Num",
+              "sym": "#/$defs/Sym"
+            },
+            "propertyName": "kind"
+          },
+          "oneOf": [
+            {
+              "$ref": "#/$defs/Num"
+            },
+            {
+              "$ref": "#/$defs/Sym"
+            },
+            {
+              "$ref": "#/$defs/Call"
+            }
+          ],
+          "title": "Rhs"
+        }
+      },
+      "required": [
+        "state",
+        "rhs"
+      ],
+      "title": "DiffEq",
+      "type": "object"
+    },
+    "Equations": {
+      "additionalProperties": false,
+      "description": "The differential and output equations of the scaffold.",
+      "properties": {
+        "differential": {
+          "items": {
+            "$ref": "#/$defs/DiffEq"
+          },
+          "title": "Differential",
+          "type": "array"
+        },
+        "outputs": {
+          "items": {
+            "$ref": "#/$defs/OutputEq"
+          },
+          "title": "Outputs",
+          "type": "array"
+        }
+      },
+      "title": "Equations",
+      "type": "object"
+    },
+    "Local": {
+      "additionalProperties": false,
+      "description": "A named intermediate expression (an algebraic/observed equation).",
+      "properties": {
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "expr": {
+          "discriminator": {
+            "mapping": {
+              "call": "#/$defs/Call",
+              "num": "#/$defs/Num",
+              "sym": "#/$defs/Sym"
+            },
+            "propertyName": "kind"
+          },
+          "oneOf": [
+            {
+              "$ref": "#/$defs/Num"
+            },
+            {
+              "$ref": "#/$defs/Sym"
+            },
+            {
+              "$ref": "#/$defs/Call"
+            }
+          ],
+          "title": "Expr"
+        },
+        "unit": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Unit"
+        },
+        "description": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Description"
+        }
+      },
+      "required": [
+        "name",
+        "expr"
+      ],
+      "title": "Local",
+      "type": "object"
+    },
+    "ModelInfo": {
+      "additionalProperties": false,
+      "description": "Identity and free-form metadata for the model.",
+      "properties": {
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "description": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Description"
+        },
+        "source_version": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Source Version"
+        },
+        "metadata": {
+          "additionalProperties": {
+            "type": "string"
+          },
+          "title": "Metadata",
+          "type": "object"
+        }
+      },
+      "required": [
+        "name"
+      ],
+      "title": "ModelInfo",
+      "type": "object"
+    },
+    "Num": {
+      "description": "A numeric literal.",
+      "properties": {
+        "kind": {
+          "const": "num",
+          "default": "num",
+          "title": "Kind",
+          "type": "string"
+        },
+        "value": {
+          "title": "Value",
+          "type": "number"
+        }
+      },
+      "required": [
+        "value"
+      ],
+      "title": "Num",
+      "type": "object"
+    },
+    "OutputEq": {
+      "additionalProperties": false,
+      "description": "An output equation ``output = rhs``.",
+      "properties": {
+        "output": {
+          "title": "Output",
+          "type": "string"
+        },
+        "rhs": {
+          "discriminator": {
+            "mapping": {
+              "call": "#/$defs/Call",
+              "num": "#/$defs/Num",
+              "sym": "#/$defs/Sym"
+            },
+            "propertyName": "kind"
+          },
+          "oneOf": [
+            {
+              "$ref": "#/$defs/Num"
+            },
+            {
+              "$ref": "#/$defs/Sym"
+            },
+            {
+              "$ref": "#/$defs/Call"
+            }
+          ],
+          "title": "Rhs"
+        }
+      },
+      "required": [
+        "output",
+        "rhs"
+      ],
+      "title": "OutputEq",
+      "type": "object"
+    },
+    "Parameter": {
+      "additionalProperties": false,
+      "description": "A time-independent model parameter declaration.",
+      "properties": {
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "default": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Default"
+        },
+        "unit": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Unit"
+        },
+        "description": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Description"
+        }
+      },
+      "required": [
+        "name"
+      ],
+      "title": "Parameter",
+      "type": "object"
+    },
+    "Provenance": {
+      "additionalProperties": false,
+      "description": "Where this IR came from and which tool produced it.",
+      "properties": {
+        "tool": {
+          "title": "Tool",
+          "type": "string"
+        },
+        "created_at": {
+          "title": "Created At",
+          "type": "string"
+        },
+        "source_format": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Source Format"
+        },
+        "source_file": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Source File"
+        },
+        "content_hash": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Content Hash"
+        }
+      },
+      "required": [
+        "tool",
+        "created_at"
+      ],
+      "title": "Provenance",
+      "type": "object"
+    },
+    "Sym": {
+      "description": "A reference to a declared symbol by canonical name.",
+      "properties": {
+        "kind": {
+          "const": "sym",
+          "default": "sym",
+          "title": "Kind",
+          "type": "string"
+        },
+        "name": {
+          "title": "Name",
+          "type": "string"
+        }
+      },
+      "required": [
+        "name"
+      ],
+      "title": "Sym",
+      "type": "object"
+    },
+    "Variable": {
+      "additionalProperties": false,
+      "description": "A declared state, input, or output variable.\n\n``roles`` carries optional tags such as ``measured``, ``manipulated``,\n``disturbance``, or ``estimated``.",
+      "properties": {
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "unit": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Unit"
+        },
+        "description": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Description"
+        },
+        "roles": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Roles",
+          "type": "array"
+        }
+      },
+      "required": [
+        "name"
+      ],
+      "title": "Variable",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "description": "The canonical intermediate representation of a process-model scaffold.",
+  "properties": {
+    "ir_version": {
+      "default": "0.1.0",
+      "title": "Ir Version",
+      "type": "string"
+    },
+    "model": {
+      "$ref": "#/$defs/ModelInfo"
+    },
+    "independent_variable": {
+      "default": "t",
+      "title": "Independent Variable",
+      "type": "string"
+    },
+    "parameters": {
+      "items": {
+        "$ref": "#/$defs/Parameter"
+      },
+      "title": "Parameters",
+      "type": "array"
+    },
+    "states": {
+      "items": {
+        "$ref": "#/$defs/Variable"
+      },
+      "title": "States",
+      "type": "array"
+    },
+    "inputs": {
+      "items": {
+        "$ref": "#/$defs/Variable"
+      },
+      "title": "Inputs",
+      "type": "array"
+    },
+    "outputs": {
+      "items": {
+        "$ref": "#/$defs/Variable"
+      },
+      "title": "Outputs",
+      "type": "array"
+    },
+    "locals": {
+      "items": {
+        "$ref": "#/$defs/Local"
+      },
+      "title": "Locals",
+      "type": "array"
+    },
+    "equations": {
+      "$ref": "#/$defs/Equations"
+    },
+    "profiles": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Profiles",
+      "type": "array"
+    },
+    "provenance": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/Provenance"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    }
+  },
+  "required": [
+    "model"
+  ],
+  "title": "Canonical Process-Model IR",
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://advanced-process-control.github.io/model-parser/canonical-ir.schema.json",
+  "x-ir-version": "0.1.0"
+}

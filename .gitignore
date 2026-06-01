@@ -22,6 +22,9 @@ dist/
 # Generated artifacts (examples write here)
 /examples/outputs/
 
+# MkDocs (local build; CI deploys via artifact)
+site/
+
 # Editor / OS
 .DS_Store
 .idea/

@@ -1,0 +1,64 @@
+site_name: apc-model-parser
+site_description: Canonical IR for process-model scaffolds — parse, validate, codegen
+site_url: https://advanced-process-control.github.io/model-parser/
+repo_url: https://github.com/Advanced-Process-Control/model-parser
+edit_uri: edit/main/docs/
+
+# Session logs under docs/chatlogs/ are not part of the published site; excluding them
+# avoids mkdocs --strict failures on repo-relative links meant for GitHub viewers.
+exclude_docs: |
+  chatlogs/**
+
+theme:
+  name: material
+  features:
+    - content.code.copy
+    - navigation.sections
+    - navigation.expand
+  palette:
+    - scheme: default
+      primary: teal
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - scheme: slate
+      primary: teal
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+
+plugins:
+  - search
+  - mkdocstrings:
+      handlers:
+        python:
+          paths: [src]
+          options:
+            docstring_style: google
+            show_source: false
+
+nav:
+  - Home: index.md
+  - Design:
+      - Product specification: design/model-parser.md
+      - IR specification: design/ir-specification.md
+      - Language strategy: design/language-strategy.md
+      - Storing MTK models: design/storing-mtk-models.md
+  - Decisions:
+      - Index: decisions/index.md
+      - "0001: Python CLI + Julia backend": decisions/0001-python-cli-with-julia-backend.md
+      - "0002: Codegen over serialized System": decisions/0002-codegen-over-serialized-system.md
+      - "0003: Explicit expression IR": decisions/0003-explicit-expression-ir.md
+      - "0004: Target MTK v11 idioms": decisions/0004-target-mtk-v11-idioms.md
+      - "0005: CLI verbs parse / emit": decisions/0005-cli-verbs-parse-emit.md
+  - API reference: api.md
+  - Deployment: deployment/ci-cd.md
+
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
+  - toc:
+      permalink: true

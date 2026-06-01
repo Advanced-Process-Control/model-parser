@@ -40,7 +40,7 @@ in-memory, dynamic workflows. Both consume the *same* IR. See
 This project uses **[uv](https://docs.astral.sh/uv/)** for everything.
 
 ```bash
-uv sync                 # create the environment from the lockfile
+uv sync --all-groups    # include dev tools (ruff, pytest, mkdocs)
 uv run model-parser --help
 ```
 
@@ -77,11 +77,15 @@ brittle across versions. Regenerating from the IR is the durable path. See
 ## Development
 
 ```bash
-uv sync
+uv sync --all-groups
 uv run ruff check .
 uv run ruff format --check .
 uv run pytest
+uv run mkdocs build --strict   # same as CI
 ```
+
+Documentation site (after [Pages](https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site#publishing-with-a-custom-github-actions-workflow) is set to GitHub Actions):
+[https://advanced-process-control.github.io/model-parser/](https://advanced-process-control.github.io/model-parser/)
 
 ## Scope
 

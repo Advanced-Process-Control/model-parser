@@ -41,6 +41,8 @@ The job:
 3. Creates a **GitHub Release** (with generated notes) and attaches the built files
 4. Publishes to **PyPI** using **trusted publishing (OIDC)** — no long-lived API token in secrets
 
+After publish, end users typically install the CLI with **`pipx install apc-model-parser`** or **`uv tool install apc-model-parser`** (command on `PATH`: **`model-parser`**).
+
 ### PyPI trusted publisher
 
 Configure the pending publisher on PyPI for:

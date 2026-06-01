@@ -20,12 +20,18 @@ authoring (ExprTk INI)  --parse-->  AST  --normalize-->  canonical IR (JSON)
 - **[Decision log](decisions/index.md)** — ADRs for major design choices.
 - **[PyPI package `apc-model-parser`](https://pypi.org/project/apc-model-parser/)** — installable CLI (`model-parser`).
 
-## Install (uv)
+## Install from PyPI
+
+The distribution name is **`apc-model-parser`**; the CLI entry point is **`model-parser`**.
 
 ```bash
+pipx install apc-model-parser
+# or:
 uv tool install apc-model-parser
+
 model-parser --help
 ```
 
-For development, clone the repository and use `uv sync --all-groups` (see
-[CI/CD and releases](deployment/ci-cd.md)).
+**`pipx`** and **`uv tool`** both install the tool into an isolated environment and put `model-parser` on your `PATH`.
+
+For **development** from a clone, use **`uv sync --all-groups`** (see [CI/CD and releases](deployment/ci-cd.md)).

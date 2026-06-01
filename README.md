@@ -37,7 +37,21 @@ in-memory, dynamic workflows. Both consume the *same* IR. See
 
 ## Install
 
-This project uses **[uv](https://docs.astral.sh/uv/)** for everything.
+### CLI from PyPI (end users)
+
+The package on PyPI is **`apc-model-parser`**; the installed command is **`model-parser`**.
+
+```bash
+pipx install apc-model-parser
+# or: uv tool install apc-model-parser
+model-parser --help
+```
+
+Use **`pipx`** or **`uv tool`** when you only need the CLI in an isolated environment.
+
+### From source (development)
+
+This repository uses **[uv](https://docs.astral.sh/uv/)** for environments and tasks.
 
 ```bash
 uv sync --all-groups    # include dev tools (ruff, pytest, mkdocs)

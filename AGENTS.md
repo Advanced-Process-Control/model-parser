@@ -203,7 +203,7 @@ docs may stay in `julia/ModelParserJL/` README until unified.
 
 **Intended layout** (keep consistent with [`docs/design/model-parser.md`](docs/design/model-parser.md)):
 
-- `docs/index.md` or root `README.md` — overview, install (`uv`), quick `parse` /
+- `docs/index.md` or root `README.md` — overview, install (PyPI via `pipx` / `uv tool`, dev via `uv`), quick `parse` /
   `emit` examples (when expanded).
 - `docs/design/` — product spec (`model-parser.md`) and deep architecture notes.
 - `docs/decisions/` — ADRs (`NNNN-title.md`) + `index.md`.

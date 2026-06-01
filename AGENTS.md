@@ -167,13 +167,16 @@ that *consume* the IR.
 If a change request conflicts with the design doc, stop and resolve via an
 explicit doc + ADR update — do not silently expand scope.
 
-## Work tracking (ADRs and issues)
+## Work tracking (ADRs, issues, and todos)
 
 - **ADRs:** numbered files under [`docs/decisions/`](docs/decisions/) (`NNNN-title.md`),
   indexed in [`docs/decisions/index.md`](docs/decisions/index.md). One decision per
   file; never delete — supersede with a newer ADR and update the index.
 - **Issues:** use GitHub issues for backlog items that are not yet an ADR; link
   ADRs from issue/PR text when a decision motivates the change.
+- **Todo briefs:** theme-sized notes under [`docs/todo/`](docs/todo/) (`index.md` +
+  one file per theme); promote into ADRs or design docs when behaviour is
+  decided. Not a substitute for issues or ADRs.
 - Prefer **small, reviewable slices** (one coherent feature, bugfix, or refactor
   per PR when practical). For larger work, split PRs and reference the same ADR
   or design section in each.

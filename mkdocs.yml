@@ -45,6 +45,15 @@ nav:
       - Language strategy: design/language-strategy.md
       - Storing MTK models: design/storing-mtk-models.md
       - Model library & versioning: design/model-library-and-versioning.md
+  - Future work:
+      - Index: todo/index.md
+      - emit ini round-trip: todo/emit-ini-round-trip.md
+      - emit cpp (realtime): todo/emit-cpp-realtime-backend.md
+      - IR schema migrations: todo/ir-schema-migrations.md
+      - Parameter set contract: todo/parameter-set-contract-cli.md
+      - Conformance & parity: todo/conformance-fixtures-parity.md
+      - INI dimensions inference: todo/ini-dimensions-inference.md
+      - diff / bump hardening: todo/diff-bump-hardening.md
   - Decisions:
       - Index: decisions/index.md
       - "0001: Python CLI + Julia backend": decisions/0001-python-cli-with-julia-backend.md

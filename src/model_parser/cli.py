@@ -16,6 +16,7 @@ Exit codes:
 
 from __future__ import annotations
 
+import json
 import sys
 from pathlib import Path
 
@@ -26,6 +27,7 @@ from model_parser.backends import emit_julia
 from model_parser.frontends import parse_ini_file
 from model_parser.io import dumps_ir, load_ir, save_ir, with_content_hash
 from model_parser.schema import dumps_schema
+from model_parser.semantic_diff import compare_ir, result_to_jsonable
 from model_parser.validation import validate_ir
 
 app = typer.Typer(
@@ -101,6 +103,56 @@ def emit_julia_cmd(
     else:
         Path(output).write_text(code, encoding="utf-8")
         typer.echo(f"wrote Julia model to {output}", err=True)
+
+
+@app.command()
+def diff(
+    old_ir: Path = typer.Argument(
+        ..., exists=True, readable=True, help="Baseline IR JSON (e.g. last release)."
+    ),
+    new_ir: Path = typer.Argument(
+        ..., exists=True, readable=True, help="Candidate IR JSON (e.g. after edits)."
+    ),
+    json_out: bool = typer.Option(False, "--json", help="Emit machine-readable JSON."),
+) -> None:
+    """Compare two canonical IR files and list semantic differences."""
+    old = load_ir(old_ir)
+    new = load_ir(new_ir)
+    result = compare_ir(old, new)
+    if json_out:
+        typer.echo(json.dumps(result_to_jsonable(result), indent=2))
+        return
+    typer.echo(f"old hash: {result.old_hash}")
+    typer.echo(f"new hash: {result.new_hash}")
+    typer.echo(f"suggested bump: {result.bump.value}")
+    if not result.items:
+        typer.echo("no classified differences (semantic bodies match)")
+        return
+    for item in result.items:
+        typer.echo(f"  [{item.code}] {item.message}")
+
+
+@app.command()
+def bump(
+    old_ir: Path = typer.Argument(
+        ..., exists=True, readable=True, help="Baseline IR JSON (e.g. last release)."
+    ),
+    new_ir: Path = typer.Argument(
+        ..., exists=True, readable=True, help="Candidate IR JSON (e.g. after edits)."
+    ),
+    json_out: bool = typer.Option(False, "--json", help="Emit machine-readable JSON."),
+) -> None:
+    """Suggest a SemVer bump by comparing two canonical IR files (advisory)."""
+    old = load_ir(old_ir)
+    new = load_ir(new_ir)
+    result = compare_ir(old, new)
+    if json_out:
+        typer.echo(json.dumps(result_to_jsonable(result), indent=2))
+        return
+    typer.echo(result.bump.value)
+    if result.items:
+        for item in result.items:
+            typer.echo(f"{item.code}: {item.message}", err=True)
 
 
 @app.command()

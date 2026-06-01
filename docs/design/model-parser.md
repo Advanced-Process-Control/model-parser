@@ -85,6 +85,8 @@ model-parser parse   <authoring-file> [--from exprtk-ini] [-o out.ir.json]
 model-parser emit julia <model.ir.json>                     [-o out.jl]
 model-parser validate <model.ir.json | authoring-file> [--profile <name>]
 model-parser inspect  <model.ir.json | authoring-file>
+model-parser diff     <old.ir.json> <new.ir.json>         [--json]
+model-parser bump     <old.ir.json> <new.ir.json>         [--json]
 model-parser ast      <authoring-file>                      [-o out.json]
 model-parser schema                                         [-o schema.json]
 ```
@@ -97,6 +99,10 @@ model-parser schema                                         [-o schema.json]
   fly), and an optional `--profile`.
 - `inspect` prints a human summary; `ast` exports a debug tree; `schema` exports
   the JSON Schema.
+- `diff` compares two canonical IR files and lists semantic changes; `bump`
+  suggests a **SemVer bump** (`none` / `patch` / `minor` / `major`) for the model
+  using a conservative policy (see
+  [`model-library-and-versioning.md`](model-library-and-versioning.md)).
 
 Exit codes: `0` success · `1` validation errors · `2` usage/load failure.
 Diagnostics use the `OK` / `WARN` / `ERROR` vocabulary.
@@ -131,7 +137,8 @@ model can be valid for Julia analysis while being rejected for a PLC target.
 ## 8. Roadmap
 
 1. **Now (MVP):** ExprTk-INI frontend, canonical IR + schema, core validators,
-   Julia codegen backend, Julia in-memory loader, example pipeline.
+   Julia codegen backend, Julia in-memory loader, example pipeline; semantic
+   `diff` / `bump` for library workflows.
 2. **Conformance:** shared IR fixtures with expected Julia output and (later)
    expected trajectories, run by both the Python codegen and `ModelParserJL`.
 3. **Round-trip:** `emit ini` and `export` from a Julia/MTK view back to IR,

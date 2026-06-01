@@ -71,3 +71,22 @@ def test_inspect(tmp_path, monod_ini):
     result = runner.invoke(app, ["inspect", str(ini)])
     assert result.exit_code == 0
     assert "monod_simple" in result.stdout
+
+
+def test_diff_same_ir_twice(tmp_path, monod_ini):
+    ini = _write(tmp_path, "monod.ini", monod_ini)
+    ir_path = tmp_path / "m.ir.json"
+    assert runner.invoke(app, ["parse", str(ini), "-o", str(ir_path)]).exit_code == 0
+    result = runner.invoke(app, ["diff", str(ir_path), str(ir_path)])
+    assert result.exit_code == 0
+    assert "none" in result.stdout
+    assert "old hash:" in result.stdout
+
+
+def test_bump_json(tmp_path, monod_ini):
+    ini = _write(tmp_path, "monod.ini", monod_ini)
+    ir_path = tmp_path / "m.ir.json"
+    assert runner.invoke(app, ["parse", str(ini), "-o", str(ir_path)]).exit_code == 0
+    result = runner.invoke(app, ["bump", str(ir_path), str(ir_path), "--json"])
+    assert result.exit_code == 0
+    assert '"bump": "none"' in result.stdout

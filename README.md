@@ -70,6 +70,8 @@ uv run model-parser emit julia monod.ir.json -o monod.jl
 # Supporting commands
 uv run model-parser validate monod.ir.json --profile julia-analysis
 uv run model-parser inspect  monod.ir.json
+uv run model-parser diff     monod.ir.json other.ir.json   # semantic IR diff
+uv run model-parser bump     monod.ir.json other.ir.json   # suggested SemVer bump
 uv run model-parser ast      examples/models/model_monod_simple.ini   # debug tree
 uv run model-parser schema   -o schemas/canonical-ir.schema.json      # export schema
 ```

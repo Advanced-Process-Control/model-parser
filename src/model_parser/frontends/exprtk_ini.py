@@ -20,6 +20,7 @@ the authoring convention; locals keep their authored names.
 
 from __future__ import annotations
 
+import os
 import re
 from dataclasses import dataclass, field
 from datetime import UTC, datetime
@@ -96,6 +97,24 @@ def _parse_kv(lines: list[str]) -> dict[str, str]:
         if match is not None:
             result[match.group(1)] = match.group(2).strip()
     return result
+
+
+def _provenance_created_at() -> str:
+    """Return ISO 8601 timestamp for ``provenance.created_at``.
+
+    If the environment variable ``SOURCE_DATE_EPOCH`` is set to a Unix timestamp
+    (seconds), use that instant in UTC instead of the wall clock. This follows
+    https://reproducible-builds.org/docs/source-date-epoch/ so regenerated IR
+    JSON stays stable when semantics are unchanged.
+    """
+    raw = os.environ.get("SOURCE_DATE_EPOCH")
+    if raw is not None:
+        try:
+            sec = int(raw)
+        except ValueError:
+            sec = 0
+        return datetime.fromtimestamp(sec, tz=UTC).isoformat()
+    return datetime.now(UTC).isoformat()
 
 
 def parse_ini_text(text: str, *, source_file: str | None = None) -> ParseResult:
@@ -182,7 +201,7 @@ def parse_ini_text(text: str, *, source_file: str | None = None) -> ParseResult:
         equations=Equations(differential=differential, outputs=output_eqs),
         provenance=Provenance(
             tool=_tool_id(),
-            created_at=datetime.now(UTC).isoformat(),
+            created_at=_provenance_created_at(),
             source_format=SOURCE_FORMAT,
             source_file=source_file,
         ),

@@ -16,6 +16,7 @@ authoring (ExprTk INI)  --parse-->  AST  --normalize-->  canonical IR (JSON)
 ## Where to read next
 
 - **[Product specification](design/model-parser.md)** — authoritative scope, CLI, and behaviour.
+- **[Model library & versioning](design/model-library-and-versioning.md)** — hashes, SemVer, sibling `model-library`, authoring vs parameter sets.
 - **[IR specification](design/ir-specification.md)** — IR shape and expression language.
 - **[Decision log](decisions/index.md)** — ADRs for major design choices.
 - **[PyPI package `apc-model-parser`](https://pypi.org/project/apc-model-parser/)** — installable CLI (`model-parser`).

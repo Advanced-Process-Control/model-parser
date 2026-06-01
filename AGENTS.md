@@ -94,8 +94,8 @@ uv run mkdocs build --strict
 ### Pure logic vs. I/O separation
 
 **Pure modules** parse, normalize, validate, and lower — no filesystem,
-subprocess, or network access. Keep `ir/`, `frontends/`, `backends/`, and
-`validation/` pure and deterministic.
+subprocess, or network access. Keep `ir/`, `frontends/`, `backends/`,
+`semantic_diff.py`, and `validation/` pure and deterministic.
 
 **I/O modules** read/write files and implement the CLI. `io.py` and `cli.py` own
 filesystem access; the CLI must stay a thin shell over the pure functions.
@@ -133,7 +133,9 @@ never a serialized `System`. Generated Julia targets **MTK v11** idioms
 
 Re-running `parse`/`emit` on unchanged input must produce byte-identical output
 (stable ordering, stable number formatting). The content hash depends only on
-the semantic body.
+the semantic body. For `provenance.created_at`, when `SOURCE_DATE_EPOCH` is set
+(see reproducible-builds.org), the INI frontend uses that instant instead of the
+wall clock so regenerated IR JSON stays stable when semantics are unchanged.
 
 ### Status vocabulary and exit codes
 
@@ -149,7 +151,8 @@ CLI diagnostics use `OK` · `WARN` · `ERROR`. Exit codes:
 
 - Long options in kebab-case (`--from`, `--profile`, `--output`/`-o`).
 - The two core verbs are `parse` (authoring → IR) and `emit <target>` (IR →
-  view). Supporting commands: `validate`, `inspect`, `ast`, `schema`.
+  view). Supporting commands: `validate`, `inspect`, `diff`, `bump`, `ast`,
+  `schema`.
 - Breaking CLI changes require a SemVer bump and release notes.
 
 ## Scope guardrails

@@ -44,6 +44,7 @@ nav:
       - IR specification: design/ir-specification.md
       - Language strategy: design/language-strategy.md
       - Storing MTK models: design/storing-mtk-models.md
+      - Model library & versioning: design/model-library-and-versioning.md
   - Decisions:
       - Index: decisions/index.md
       - "0001: Python CLI + Julia backend": decisions/0001-python-cli-with-julia-backend.md

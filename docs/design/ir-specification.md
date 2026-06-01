@@ -53,7 +53,9 @@ one namespace; duplicates are a validation error.
 
 `provenance.content_hash` is `sha256` over the canonical JSON of the IR body
 **excluding** `provenance`. Downstream artifacts reference a scaffold by this
-hash, not by file path.
+hash, not by file path. For how this interacts with a versioned model library,
+SemVer, and git, see
+[`model-library-and-versioning.md`](model-library-and-versioning.md).
 
 ## 3. Expression sub-language
 

@@ -29,19 +29,21 @@ long-term storage to one symbolic library's internal API is exactly the
 
 ## 2. The chosen approach
 
-Two durable artifacts, both derived from the IR:
+A durable **canonical IR JSON** plus **one or more generated Julia views** from
+the same IR:
 
 1. **Canonical IR JSON** — the source of truth. Language-neutral, diffable,
    schema-validated, content-hashed. This is what we persist and version.
-2. **Generated `.jl` script** — produced by `model-parser emit julia`. A
-   plain-text, re-runnable artifact that constructs the `System` with current
-   MTK idioms. Regenerated whenever the IR changes; never hand-edited.
+2. **Generated `.jl` scripts** — produced by `model-parser emit julia` (MTK
+   `System` builder) and, when needed, `model-parser emit julia-rhs` (plain
+   `f!` / `outputs!` for vector ODE workflows). Plain-text, re-runnable artifacts
+   regenerated whenever the IR changes; never hand-edited.
 
 ```text
                  store / version
                  ┌──────────────┐
-  authoring ──►  │ IR JSON      │  ──emit julia──►  generated .jl  ──include──►  System
-   (.ini)        │ (.ir.json)   │                   (re-runnable)               (in memory)
+  authoring ──►  │ IR JSON      │  ──emit julia──►  MTK builder .jl ──►  System
+   (.ini)        │ (.ir.json)   │  ──emit julia-rhs──►  f!/outputs! .jl
                  └──────────────┘
                         │
                         └────────  ModelParserJL.build_system(ir)  ──►  System

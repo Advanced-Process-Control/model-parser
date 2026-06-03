@@ -1,6 +1,6 @@
 [project]
 name = "apc-model-parser"
-version = "0.2.1"
+version = "0.2.2"
 description = "Convert process-model definitions to and from a canonical intermediate representation."
 readme = "README.md"
 requires-python = ">=3.11"

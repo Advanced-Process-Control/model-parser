@@ -22,8 +22,9 @@ ecosystem and must remain usable **standalone**.
 ```text
 authoring (ExprTk INI)  --parse-->  AST  --normalize-->  canonical IR (JSON)
                                                           |
-                                          emit julia  --> ModelingToolkit .jl
-                                          emit cpp    --> (planned) realtime C++
+                                          emit julia      --> ModelingToolkit .jl
+                                          emit julia-rhs  --> numerical f!/outputs! .jl
+                                          emit cpp        --> (planned) realtime C++
 ```
 
 ## Language

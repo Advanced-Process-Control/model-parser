@@ -13,8 +13,9 @@ model script.
 ```text
 authoring (ExprTk INI)  --parse-->  AST  --normalize-->  canonical IR (JSON)
                                                           |
-                                          emit julia  --> ModelingToolkit .jl
-                                          emit cpp    --> (planned) realtime C++
+                                          emit julia      --> ModelingToolkit .jl
+                                          emit julia-rhs  --> numerical f!/outputs! .jl
+                                          emit cpp        --> (planned) realtime C++
 ```
 
 The IR is the single semantic contract. Adding a backend means writing one
@@ -66,6 +67,9 @@ uv run model-parser parse examples/models/model_monod_simple.ini -o monod.ir.jso
 
 # 2. canonical IR  ->  ModelingToolkit (v11) Julia model
 uv run model-parser emit julia monod.ir.json -o monod.jl
+
+# 2a. canonical IR  ->  plain numerical ODE RHS (SciML-style f!)
+uv run model-parser emit julia-rhs monod.ir.json -o monod_rhs.jl
 
 # Supporting commands
 uv run model-parser validate monod.ir.json --profile julia-analysis

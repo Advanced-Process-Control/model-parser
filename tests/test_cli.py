@@ -35,6 +35,12 @@ def test_parse_then_emit_pipeline(tmp_path, monod_ini):
     code = jl_path.read_text()
     assert "mtkcompile" in code
 
+    rhs_path = tmp_path / "monod_rhs.jl"
+    rhs = runner.invoke(app, ["emit", "julia-rhs", str(ir_path), "-o", str(rhs_path)])
+    assert rhs.exit_code == 0, rhs.output
+    rhs_code = rhs_path.read_text()
+    assert "f_monod_simple!" in rhs_code
+
 
 def test_validate_ok(tmp_path, monod_ini):
     ini = _write(tmp_path, "monod.ini", monod_ini)

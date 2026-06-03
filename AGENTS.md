@@ -215,6 +215,8 @@ docs may stay in `julia/ModelParserJL/` README until unified.
 - `docs/design/` — product spec (`model-parser.md`) and deep architecture notes.
 - `docs/decisions/` — ADRs (`NNNN-title.md`) + `index.md`.
 - `docs/chatlogs/` — session summaries (see **Session summaries** below).
+- `docs/release-notes/` — GitHub Release bodies (`gh release … --notes-file`); see
+  **Release notes draft** under session summaries and [`docs/release-notes/README.md`](docs/release-notes/README.md).
 - `docs/deployment/` — optional summaries for CI/CD, packaging, and release
   process once those exist in-repo.
 
@@ -280,6 +282,23 @@ Every chatlog MUST begin with a **`## Commit helper`** section (level-2 heading)
 - **Git order when tagging:** never tag before the release commit exists locally:
   **commit / push branch (with version bump)** → **`git tag -a vX.Y.Z` on that
   commit** → **`git push origin vX.Y.Z`**.
+- **`Release notes` / `gh release` (when a versioned release is proposed):** If
+  **`Tags / GitHub Release`** is not **None** (a tag like `vX.Y.Z` is proposed for
+  this change series), add a new Markdown file under
+  [`docs/release-notes/`](docs/release-notes/) named **`vX.Y.Z_short-slug.md`**
+  (ASCII slug; body = user-facing highlights, CLI/IR changes, breaking notes).
+  The chatlog MUST **link** to that file (in **`links:`** frontmatter and/or a
+  Markdown link in **`## Commit helper`**) and MUST include a fenced **`bash`**
+  block with the exact **`gh release create`** command to run **after** the tag
+  exists on the remote, for example:
+
+  ```bash
+  gh release create vX.Y.Z --title "vX.Y.Z — …" --notes-file docs/release-notes/vX.Y.Z_short-slug.md
+  ```
+
+  (use **`--prerelease`** when **`Tags / GitHub Release`** indicates a pre-release).
+  If no release is proposed, write **`Release notes / gh release: N/A (no tag).`**
+  instead of adding a file.
 
 ### How to try (mandatory unless N/A)
 
@@ -296,9 +315,34 @@ risks in English (**goal → shipped surface → decisions → follow-ups**).
 
 **Frontmatter (YAML):** at least `title`, `topic`, `date_added`, `tags: [chatlogs]`,
 and `links:` to touched specs or code (e.g. `AGENTS.md`, `docs/design/model-parser.md`).
+When a **versioned release** is proposed in **`## Commit helper`**, include the
+matching **`docs/release-notes/vX.Y.Z_short-slug.md`** in **`links:`** as well.
 
 **Not a substitute for:** ADRs, tests, or commit messages — those remain the source
 of truth for the contract.
+
+### Release notes draft (when a release is proposed)
+
+When **`Tags / GitHub Release`** in the same session’s **`## Commit helper`** is
+not **None**, agents and maintainers MUST treat the release body as a **tracked
+artifact** in-repo (not only GitHub UI text):
+
+1. Create **`docs/release-notes/vX.Y.Z_short-slug.md`** in the **same** change
+   series as the version bump, chatlog, and code — plain Markdown suitable for
+   **`gh release create … --notes-file`** (no YAML frontmatter required in that
+   file unless you want it for local tooling).
+2. Link it from the session chatlog (**`links:`** and/or an explicit link under
+   **`## Commit helper`**).
+3. Under **`## Commit helper`**, include the copy-paste **`gh release create`**
+   command (see the **`Release notes` / `gh release`** bullet above). Run it **after**
+   **`git push origin vX.Y.Z`** so the tag exists for **`release.yml`**. Adjust
+   **`--title`** to match the release; use **`--prerelease`** when applicable.
+
+If the session does **not** propose a tag, skip the file and use **N/A** in the
+commit helper for **`Release notes` / `gh release`**.
+
+These files live beside chatlogs for discoverability; like chatlogs, they are
+**excluded** from the MkDocs published site (`mkdocs.yml` → **`exclude_docs`**).
 
 ## CI/CD (GitHub Actions)
 
@@ -350,8 +394,10 @@ Keep them identical for each release tag.
   **annotated** tag **`vX.Y.Z`** on **that** commit; **then** `git push origin vX.Y.Z`.
   Release automation (when added) should trigger on tag push; the leading `v` is
   a common convention — match whatever `release.yml` expects.
-- **Release notes:** use GitHub auto-generated notes where helpful; edit for IR or
-  CLI highlights.
+- **Release notes:** prefer the committed draft under **`docs/release-notes/`**
+  (see **Session summaries** and **Release notes draft** in this file) and
+  **`gh release create TAG --notes-file docs/release-notes/vX.Y.Z_slug.md`** after
+  the tag is pushed; edit auto-generated notes only as a supplement.
 - **Optional `CHANGELOG.md`:** if introduced, follow
   [Keep a Changelog](https://keepachangelog.com/) and update it in the release
   commit series.

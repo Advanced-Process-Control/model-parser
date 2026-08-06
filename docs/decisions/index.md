@@ -18,6 +18,7 @@ code and review naturally in pull requests.
 | [0004](0004-target-mtk-v11-idioms.md) | Generated Julia targets ModelingToolkit v11 idioms | accepted | 2026-06-01 |
 | [0005](0005-cli-verbs-parse-emit.md) | CLI shape: `parse` and `emit <target>` as core verbs | accepted | 2026-06-01 |
 | [0006](0006-julia-numerical-rhs-view.md) | Second Julia view: plain `f!` / `outputs!` from IR (`emit julia-rhs`) | accepted | 2026-06-03 |
+| [0007](0007-python-numerical-view.md) | Python numerical RHS and output functions (`emit python`) | accepted | 2026-08-06 |
 
 ## Format
 

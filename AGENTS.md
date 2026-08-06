@@ -24,6 +24,7 @@ authoring (ExprTk INI)  --parse-->  AST  --normalize-->  canonical IR (JSON)
                                                           |
                                           emit julia      --> ModelingToolkit .jl
                                           emit julia-rhs  --> numerical f!/outputs! .jl
+                                          emit python     --> numerical functions .py
                                           emit cpp        --> (planned) realtime C++
 ```
 

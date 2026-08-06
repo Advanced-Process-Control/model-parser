@@ -26,6 +26,7 @@ work fight a language poor at parsing and CLI ergonomics.
 | IR data model + JSON Schema | Python (Pydantic) | `ir/`, `schema.py` |
 | Validators (semantic + profile) | Python | `validation/` |
 | **Codegen** IR → MTK `.jl` | Python | `backends/julia_mtk.py` |
+| **Codegen** IR → numerical `.jl` / `.py` | Python | `backends/julia_rhs.py`, `backends/python.py` |
 | IR → `System` (in memory) | Julia | `julia/ModelParserJL` |
 | Simulation / analysis / conformance reference | Julia | `julia/ModelParserJL` (+ SciML) |
 

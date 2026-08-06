@@ -63,6 +63,7 @@ nav:
       - "0004: Target MTK v11 idioms": decisions/0004-target-mtk-v11-idioms.md
       - "0005: CLI verbs parse / emit": decisions/0005-cli-verbs-parse-emit.md
       - "0006: Julia numerical RHS view": decisions/0006-julia-numerical-rhs-view.md
+      - "0007: Python numerical view": decisions/0007-python-numerical-view.md
   - API reference: api.md
   - Deployment: deployment/ci-cd.md
 

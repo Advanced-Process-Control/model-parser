@@ -9,7 +9,7 @@ commands assume you have run `uv sync` in the repository root.
 |---|---|
 | [`models/model_monod_simple.ini`](models/model_monod_simple.ini) | A 2-state Monod CSTR, no inputs. |
 | [`models/model_thermal_tank.ini`](models/model_thermal_tank.ini) | A 2-state heated tank with 3 inputs. |
-| [`run.sh`](run.sh) | Runs the full `parse → validate → emit julia → emit julia-rhs` pipeline for both models. |
+| [`run.sh`](run.sh) | Runs the parse, validate, and Julia/Python emit pipeline for both models. |
 
 Generated artifacts are written to `outputs/` (git-ignored).
 
@@ -24,6 +24,9 @@ uv run model-parser emit julia examples/outputs/monod.ir.json -o examples/output
 
 # canonical IR  ->  plain numerical RHS (f! / outputs!)
 uv run model-parser emit julia-rhs examples/outputs/monod.ir.json -o examples/outputs/monod_rhs.jl
+
+# canonical IR  ->  Python RHS and output functions
+uv run model-parser emit python examples/outputs/monod.ir.json -o examples/outputs/monod.py
 
 # validate against a backend profile
 uv run model-parser validate examples/outputs/monod.ir.json --profile julia-analysis
@@ -45,3 +48,5 @@ Or run everything at once:
   overrides at `ODEProblem` construction time.
 - The `emit julia-rhs` view defines `f_<model>!(du, u, p, t)` (and optional
   `outputs_<model>!`); see header comments in the file for `u` / `p` / `inp` packing.
+- The `emit python` view defines `f_<model>(t, state, parameters[, inputs])`
+  and optional `outputs_<model>`; both return lists in IR declaration order.

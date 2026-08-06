@@ -7,14 +7,14 @@ representation (IR).**
 *model scaffold* contract and the transformations around it. It parses an
 authoring format (today: the ExprTk-style INI used by the MPC / simulation
 toolchain) into a normalized, backend-independent **canonical IR**, and lowers
-that IR into target views — starting with a generated **ModelingToolkit (Julia)**
-model script.
+that IR into generated **Julia and Python model views**.
 
 ```text
 authoring (ExprTk INI)  --parse-->  AST  --normalize-->  canonical IR (JSON)
                                                           |
                                           emit julia      --> ModelingToolkit .jl
                                           emit julia-rhs  --> numerical f!/outputs! .jl
+                                          emit python     --> numerical functions .py
                                           emit cpp        --> (planned) realtime C++
 ```
 
@@ -70,6 +70,9 @@ uv run model-parser emit julia monod.ir.json -o monod.jl
 
 # 2a. canonical IR  ->  plain numerical ODE RHS (SciML-style f!)
 uv run model-parser emit julia-rhs monod.ir.json -o monod_rhs.jl
+
+# 2b. canonical IR  ->  Python ODE RHS and output functions
+uv run model-parser emit python monod.ir.json -o monod.py
 
 # Supporting commands
 uv run model-parser validate monod.ir.json --profile julia-analysis

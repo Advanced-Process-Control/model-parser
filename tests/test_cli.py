@@ -41,6 +41,12 @@ def test_parse_then_emit_pipeline(tmp_path, monod_ini):
     rhs_code = rhs_path.read_text()
     assert "f_monod_simple!" in rhs_code
 
+    py_path = tmp_path / "monod.py"
+    python = runner.invoke(app, ["emit", "python", str(ir_path), "-o", str(py_path)])
+    assert python.exit_code == 0, python.output
+    python_code = py_path.read_text()
+    assert "def f_monod_simple(t, state, parameters):" in python_code
+
 
 def test_validate_ok(tmp_path, monod_ini):
     ini = _write(tmp_path, "monod.ini", monod_ini)

@@ -12,6 +12,7 @@ for model in monod_simple thermal_tank; do
   ir="$out/${model}.ir.json"
   jl="$out/${model}.jl"
   rhs="$out/${model}_rhs.jl"
+  py="$out/${model}.py"
 
   echo "== $model: parse =="
   uv run model-parser parse "$ini" -o "$ir"
@@ -26,7 +27,11 @@ for model in monod_simple thermal_tank; do
   echo "== $model: emit julia-rhs =="
   uv run model-parser emit julia-rhs "$ir" -o "$rhs"
   echo "wrote $rhs"
+
+  echo "== $model: emit python =="
+  uv run model-parser emit python "$ir" -o "$py"
+  echo "wrote $py"
   echo
 done
 
-echo "Done. Generated IR + Julia views in $out"
+echo "Done. Generated IR + Julia/Python views in $out"

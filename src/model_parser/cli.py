@@ -6,6 +6,7 @@ verbs follow the ecosystem's transformation vocabulary:
     model-parser parse  <model.ini>      # authoring format  -> canonical IR JSON
     model-parser emit julia <model.ir.json>      # IR  -> MTK Julia script
     model-parser emit julia-rhs <model.ir.json>  # IR  -> plain f!/outputs! Julia
+    model-parser emit python <model.ir.json>     # IR  -> numerical Python functions
 
 Plus supporting commands: ``validate``, ``inspect``, ``ast``, and ``schema``.
 
@@ -24,7 +25,7 @@ from pathlib import Path
 import typer
 
 from model_parser import __version__
-from model_parser.backends import emit_julia, emit_julia_rhs
+from model_parser.backends import emit_julia, emit_julia_rhs, emit_python
 from model_parser.frontends import parse_ini_file
 from model_parser.io import dumps_ir, load_ir, save_ir, with_content_hash
 from model_parser.schema import dumps_schema
@@ -121,6 +122,23 @@ def emit_julia_rhs_cmd(
     else:
         Path(output).write_text(code, encoding="utf-8")
         typer.echo(f"wrote Julia numerical RHS to {output}", err=True)
+
+
+@emit_app.command("python")
+def emit_python_cmd(
+    ir_file: Path = typer.Argument(..., exists=True, readable=True, help="IR JSON file."),
+    output: Path | None = typer.Option(
+        None, "-o", "--output", help="Python output path (default: stdout)."
+    ),
+) -> None:
+    """Generate numerical Python RHS and optional output functions from an IR file."""
+    ir = load_ir(ir_file)
+    code = emit_python(ir)
+    if output is None:
+        typer.echo(code, nl=False)
+    else:
+        Path(output).write_text(code, encoding="utf-8")
+        typer.echo(f"wrote Python numerical model to {output}", err=True)
 
 
 @app.command()

@@ -15,6 +15,7 @@ authoring (ExprTk INI)  --parse-->  AST  --normalize-->  canonical IR (JSON)
                                                           |
                                           emit julia      --> ModelingToolkit .jl
                                           emit julia-rhs  --> numerical f!/outputs! .jl
+                                          emit python     --> numerical functions .py
                                           emit cpp        --> (planned) realtime C++
                                           emit ini        --> (planned) round-trip
 ```
@@ -39,8 +40,9 @@ In scope:
   missing equations, local ordering) and backend-profile checks.
 - **Backends** — lower the IR into a target view. Backends today: a
   ModelingToolkit (Julia) model script (`emit julia`) and a plain numerical
-  ODE RHS plus optional output map (`emit julia-rhs`). A Julia companion package
-  (`ModelParserJL`) loads the IR in memory.
+  ODE RHS plus optional output map in Julia (`emit julia-rhs`) or Python
+  (`emit python`). A Julia companion package (`ModelParserJL`) loads the IR in
+  memory.
 
 Out of scope (sibling tools that *consume* the IR):
 
@@ -60,7 +62,7 @@ scaffold contract, not an everything-bucket (see the org risk note on
 | **Authoring** | What the engineer writes (ExprTk INI today). | yes (`.ini`) |
 | **AST** | Syntax-oriented tree from the parser. Internal. | debug only |
 | **Canonical IR** | Normalized, backend-independent scaffold semantics. | yes (`.ir.json`) |
-| **Backend view** | A lowered target (MTK `.jl`, numerical RHS `.jl`, future C++). | yes (generated) |
+| **Backend view** | A lowered target (MTK `.jl`, numerical `.jl`/`.py`, future C++). | yes (generated) |
 
 The AST is in-memory; the IR is the durable interchange contract. The full IR
 shape and the expression sub-language are specified in
@@ -86,6 +88,7 @@ contracts ("initial values live in the scenario, not the scaffold").
 model-parser parse   <authoring-file> [--from exprtk-ini] [-o out.ir.json]
 model-parser emit julia      <model.ir.json>             [-o out.jl]
 model-parser emit julia-rhs  <model.ir.json>             [-o out.jl]
+model-parser emit python     <model.ir.json>             [-o out.py]
 model-parser validate <model.ir.json | authoring-file> [--profile <name>]
 model-parser inspect  <model.ir.json | authoring-file>
 model-parser diff     <old.ir.json> <new.ir.json>         [--json]
@@ -96,10 +99,10 @@ model-parser schema                                         [-o schema.json]
 
 - `parse` is the **authoring → IR** transformation. Default and only frontend
   today is `exprtk-ini`.
-- `emit <target>` is the **IR → view** transformation. Julia targets: `julia`
-  (ModelingToolkit v11 scaffold) and `julia-rhs` (plain `f!` / optional
-  `outputs!`). Designed to grow (`emit cpp`, `emit ini`) without touching
-  existing targets.
+- `emit <target>` is the **IR → view** transformation. Targets: `julia`
+  (ModelingToolkit v11 scaffold), `julia-rhs` (plain `f!` / optional
+  `outputs!`), and `python` (SciPy-shaped RHS plus optional output function).
+  Designed to grow (`emit cpp`, `emit ini`) without touching existing targets.
 - `validate` accepts either an IR `.json` or an authoring file (parsed on the
   fly), and an optional `--profile`.
 - `inspect` prints a human summary; `ast` exports a debug tree; `schema` exports
@@ -119,6 +122,7 @@ uv run model-parser parse  examples/models/model_monod_simple.ini -o monod.ir.js
 uv run model-parser validate monod.ir.json --profile julia-analysis
 uv run model-parser emit julia monod.ir.json -o monod.jl
 uv run model-parser emit julia-rhs monod.ir.json -o monod_rhs.jl
+uv run model-parser emit python monod.ir.json -o monod.py
 ```
 
 ## 6. Language split

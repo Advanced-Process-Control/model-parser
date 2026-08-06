@@ -5,12 +5,14 @@
 `model-parser` owns the *model scaffold* contract for the Advanced Process Control
 toolchain: it parses an authoring format (today: ExprTk-style INI) into a
 normalized **canonical IR** (JSON), validates it, and lowers it to target views —
-starting with generated **ModelingToolkit v11** Julia.
+including generated **ModelingToolkit v11**, Julia RHS, and Python functions.
 
 ```text
 authoring (ExprTk INI)  --parse-->  AST  --normalize-->  canonical IR (JSON)
                                                           |
-                                          emit julia  --> ModelingToolkit .jl
+                                          emit julia      --> ModelingToolkit .jl
+                                          emit julia-rhs  --> numerical f!/outputs! .jl
+                                          emit python     --> numerical functions .py
 ```
 
 ## Where to read next

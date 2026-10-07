@@ -3,7 +3,7 @@
 This complements the ModelingToolkit view: the same IR is lowered to a
 SciML-style ``f!(du, u, p, t)`` (and ``outputs!`` when output equations exist)
 for workflows that need an explicit numerical ODE RHS without building an MTK
-``System``. See ADR 0006.
+``System``. Packing follows IR declaration order (see DESIGN.md).
 """
 
 from __future__ import annotations

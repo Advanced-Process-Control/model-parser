@@ -2,7 +2,7 @@
 
 This is a small, explicit tokenizer + precedence-climbing parser. It exists
 instead of regex string rewrites so that operator precedence, associativity,
-and conditional semantics are defined in *one* place (ADR 0003). The output is
+and conditional semantics are defined in *one* place. The output is
 an :data:`model_parser.ir.expr.Expr` tree that every backend lowers from.
 
 Supported surface (the ExprTk subset used by the authoring INI format):

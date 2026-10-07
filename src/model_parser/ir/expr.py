@@ -1,9 +1,9 @@
 """Expression IR: a small, explicit, backend-independent expression tree.
 
 The expression sub-language is represented as a tagged tree rather than as a
-backend-specific string. This is the core of ADR 0003 (explicit expression IR):
-every backend lowers from the *same* tree, so conditional and numeric semantics
-are defined once instead of being re-derived per target via string rewrites.
+backend-specific string. Every backend lowers from the *same* tree, so
+conditional and numeric semantics are defined once instead of being
+re-derived per target via string rewrites.
 
 Three node kinds exist:
 

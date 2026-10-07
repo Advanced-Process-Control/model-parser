@@ -7,7 +7,7 @@ into a ModelingToolkit `System`, **in memory**, without a code-generation step.
 This is the complementary path to the Python `emit julia` codegen backend:
 
 - **Codegen** (`model-parser emit julia`) produces a re-runnable `.jl` artifact;
-  it is the durable, version-controlled form (see ADR 0002).
+  it is the durable, version-controlled form (see DESIGN.md).
 - **`ModelParserJL.build_system`** consumes the IR JSON at run time; it is for
   dynamic / interactive workflows where writing a file is unnecessary.
 

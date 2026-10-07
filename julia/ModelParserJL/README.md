@@ -9,7 +9,7 @@ This is the complementary path to `model-parser emit julia`:
 
 | Path | Produces | Use when |
 |---|---|---|
-| `model-parser emit julia <ir>` (Python) | a re-runnable `.jl` **file** | you want a durable, diffable, version-controlled artifact (the default; see [ADR 0002](../../docs/decisions/0002-codegen-over-serialized-system.md)) |
+| `model-parser emit julia <ir>` (Python) | a re-runnable `.jl` **file** | you want a durable, diffable, version-controlled artifact (the default; see [DESIGN.md](../../DESIGN.md#key-decisions)) |
 | `ModelParserJL.build_system(ir)` (Julia) | an in-memory `System` | interactive / dynamic workflows; or as the conformance reference |
 
 Both consume the **same** IR contract, so they stay semantically aligned.

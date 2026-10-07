@@ -20,9 +20,9 @@ authoring (ExprTk INI)  --parse-->  AST  --normalize-->  canonical IR (JSON)
 
 The IR is the single semantic contract. Adding a backend means writing one
 `lower` + one `export`, not an N×N mesh of view-to-view translators. See
-[`docs/design/model-parser.md`](docs/design/model-parser.md) for the
-authoritative product specification and
-[`docs/decisions/`](docs/decisions/) for the design decision records.
+[`DESIGN.md`](DESIGN.md) for architecture and design decisions,
+[`docs/cli.md`](docs/cli.md) for the CLI and generated views, and
+[`CHANGELOG.md`](CHANGELOG.md) for releases.
 
 ## Why two languages?
 
@@ -33,8 +33,7 @@ authoritative product specification and
 
 The Python CLI builds and validates the IR and **generates** Julia code; the
 Julia package can additionally load an IR directly into an MTK `System` for
-in-memory, dynamic workflows. Both consume the *same* IR. See
-[ADR 0001](docs/decisions/0001-python-cli-with-julia-backend.md).
+in-memory, dynamic workflows. Both consume the *same* IR.
 
 ## Install
 
@@ -94,8 +93,7 @@ The persisted, version-controlled form of a model is the **IR JSON** plus the
 v11 changed `System` internals significantly (precompilation, removal of
 `defaults`, deprecation of `@mtkmodel`), so serializing the live object is
 brittle across versions. Regenerating from the IR is the durable path. See
-[ADR 0002](docs/decisions/0002-codegen-over-serialized-system.md) and
-[`docs/design/storing-mtk-models.md`](docs/design/storing-mtk-models.md).
+[`DESIGN.md`](DESIGN.md#key-decisions).
 
 ## Development
 

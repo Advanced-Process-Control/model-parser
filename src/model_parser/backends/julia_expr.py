@@ -1,7 +1,7 @@
 """Shared Julia expression lowering from the IR expression tree.
 
 Used by multiple Julia codegen backends so expression semantics stay in one
-place (see ADR 0003).
+place; no backend rewrites expression strings.
 """
 
 from __future__ import annotations

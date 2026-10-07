@@ -59,8 +59,7 @@ SemVer, and git, see
 
 ## 3. Expression sub-language
 
-Expressions are an explicit tagged tree, not strings (see
-[ADR 0003](../decisions/0003-explicit-expression-ir.md)). Three node kinds:
+Expressions are an explicit tagged tree, not strings. Three node kinds:
 
 ```jsonc
 { "kind": "num", "value": 0.4 }
@@ -109,7 +108,7 @@ MTK v11 parameter-splitting.
 ## 5. Versioning
 
 `ir_version` follows SemVer. Additive, backward-compatible fields → MINOR.
-Breaking shape changes → MAJOR, and require migration tooling plus an ADR. The
+Breaking shape changes → MAJOR, and require migration tooling. The
 JSON Schema is regenerated and committed on every shape change:
 
 ```bash

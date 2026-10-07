@@ -2,10 +2,10 @@
 
 This is the ``lower`` transformation from IR to the Julia analysis view. It
 *generates source code* rather than serializing a compiled ``System`` object —
-see ADR 0002. The generated script is a re-runnable, diffable artifact whose
-source of truth remains the IR.
+the IR is persisted, never a ``System``. The generated script is a
+re-runnable, diffable artifact whose source of truth remains the IR.
 
-The emitted code targets **ModelingToolkit v11** idioms (see ADR 0004):
+The emitted code targets **ModelingToolkit v11** idioms:
 
 - explicit ``System(eqs, t)`` construction (no deprecated ``@mtkmodel`` DSL);
 - ``mtkcompile`` instead of ``structural_simplify``;

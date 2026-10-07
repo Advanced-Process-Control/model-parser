@@ -8,7 +8,7 @@ models and the transformations around it:
   script or plain numerical Julia/Python functions);
 - **validation** checks an IR against the schema and backend profiles.
 
-See ``docs/design/model-parser.md`` for the authoritative product specification.
+See ``DESIGN.md`` for architecture and design decisions.
 """
 
 from model_parser.ir import IR_VERSION, IRModel

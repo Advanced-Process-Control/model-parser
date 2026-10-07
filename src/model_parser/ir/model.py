@@ -4,7 +4,7 @@ The IR describes a model **scaffold** only: structure, declarations, and
 equations. Concrete numeric parameter values are carried as *defaults* for
 bootstrap convenience, but fitted parameter sets and execution scenarios
 (initial values, input trajectories, horizons) are deliberately *out of scope*
-here — they are sibling contracts (see ADR 0006 and the org contracts page).
+here — they are sibling contracts (see DESIGN.md).
 
 The model is a Pydantic v2 model so that the JSON Schema and structural
 validation come for free; semantic checks live in :mod:`model_parser.validation`.
@@ -17,7 +17,7 @@ from pydantic import BaseModel, ConfigDict, Field
 from model_parser.ir.expr import Expr
 
 IR_VERSION = "0.1.0"
-"""SemVer of the IR schema. Major bumps require migration tooling and an ADR."""
+"""SemVer of the IR schema. Major bumps require migration tooling."""
 
 
 class Parameter(BaseModel):

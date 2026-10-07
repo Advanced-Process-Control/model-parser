@@ -18,18 +18,18 @@ Do not collapse these into one number. They answer different questions.
 
 The content hash is **identity and integrity**, not history. It supports deduplication, cache keys, cross-repository references (“this parameter set was fitted against scaffold `sha256:…`”), and CI checks that regenerated artifacts still match the IR. It does **not** replace git, and it is a poor user-facing release label.
 
-See also [`ir-specification.md`](ir-specification.md) (identity / `content_hash`) and [`storing-mtk-models.md`](storing-mtk-models.md) (durable IR + generated `.jl`).
+See also [`ir-specification.md`](ir-specification.md) (identity / `content_hash`) and [CLI and generated views](../cli.md).
 
 ## 2. What the hash is good for
 
 - **Drift detection** — Re-emit Julia (or future backends) in CI and assert outputs match expectations, or compare to a lockfile that records per-artifact digests.
-- **Cache keys** — Compiled problems or other caches should key on `content_hash`, target profile, and relevant toolchain versions (see *Storing MTK models* §4).
+- **Cache keys** — Compiled problems or other caches should key on `content_hash`, target profile, and relevant toolchain versions.
 - **Pins without paths** — Downstream contracts reference the scaffold by hash, not by repository path (“hashes over file paths” org vocabulary).
 - **Equivalence** — Two authoring files that normalize to the same IR yield the same hash (useful for detecting accidental duplicates or proving a refactor was semantics-preserving).
 
 ## 3. Semantic diff and inferred bumps
 
-Because expressions live in an **explicit tagged tree** in the IR (not strings; see [ADR 0003](../decisions/0003-explicit-expression-ir.md)), the tool can compare two IRs structurally and suggest a **SemVer bump** for the *model* (distinct from `ir_version`, which versions the IR schema).
+Because expressions live in an **explicit tagged tree** in the IR (not strings), the tool can compare two IRs structurally and suggest a **SemVer bump** for the *model* (distinct from `ir_version`, which versions the IR schema).
 
 The CLI exposes:
 
@@ -61,7 +61,7 @@ Policies can evolve; treat `bump` as **advisory** until your library documents s
 - Directory layout, **lockfile** / catalog, CI that regenerates artifacts and fails on drift.
 - Git tags, release notes, and human curation.
 
-This keeps `model-parser` small and standalone (see [`model-parser.md`](model-parser.md) §2 and *Non-goals*) while still enabling a “living” multi-representation library.
+This keeps `model-parser` small and standalone while still enabling a “living” multi-representation library.
 
 ## 5. Suggested `model-library` layout
 
@@ -94,10 +94,7 @@ flowchart TD
     G --> H[CI: re-sync or re-emit; fail on drift]
 ```
 
-Do **not** hand-edit generated `.jl` or `.py` files; they are compilation products
-(see [`storing-mtk-models.md`](storing-mtk-models.md)). Planned `emit ini`
-round-trip (product roadmap) will reduce the need to maintain two authoring
-encodings by hand.
+Do **not** hand-edit generated `.jl` or `.py` files; they are compilation products.
 
 ## 7. Scaffold vs parameter sets vs scenarios (authoring files)
 
@@ -105,7 +102,7 @@ The IR intentionally describes the **scaffold** only: structure, equations, role
 
 ### Current ExprTk INI
 
-Today’s frontend documents that **`[x0]` / `[u0]` are dropped** with a warning because they are scenario data ([`model-parser.md`](model-parser.md) §4). **`[Dimensions]`** is still required: it declares how many `x*`, `u*`, and `y*` slots exist before equations are parsed. In principle, counts could be **inferred** from the maximum indices appearing in `dx*`, `y*`, and `u*` references; that would be a **frontend enhancement**, not an IR change.
+Today’s frontend documents that **`[x0]` / `[u0]` are dropped** with a warning because they are scenario data ([CLI](../cli.md)). **`[Dimensions]`** is still required: it declares how many `x*`, `u*`, and `y*` slots exist before equations are parsed. In principle, counts could be **inferred** from the maximum indices appearing in `dx*`, `y*`, and `u*` references; that would be a **frontend enhancement**, not an IR change.
 
 ### Should parameter *values* leave the INI?
 
@@ -122,31 +119,6 @@ Whether values also appear in the INI is a **workflow choice**:
 
 `model-parser` does not yet ship a parameter-set file format; when the org standardizes one, the library should adopt it alongside the IR.
 
-### Optimal authoring format (if not tied to INI)
-
-A greenfield layout often works well as **two or three small files per model** (or one folder):
-
-1. **`scaffold.*`** — YAML or TOML: metadata, symbol tables, equations as structured expressions *or* as controlled strings parsed by the same expression grammar. YAML maps naturally to nested expression trees for tooling.
-2. **`parameters.default.json`** — optional; references `content_hash` of the IR once emitted, or references `model.name` + lockfile version for humans.
-3. **`scenario.*`** — initial conditions, setpoints, simulation horizon.
-
-The important part is not the concrete syntax but the **separation of concerns** and a single **semantic hub** (the IR) so backends stay renderers, not re-parsers.
-
 ## 8. Reproducible provenance timestamps
 
 For committed IR JSON, `provenance.created_at` would otherwise change on every regeneration. When **`SOURCE_DATE_EPOCH`** is set (Unix epoch seconds, per [reproducible-builds.org](https://reproducible-builds.org/docs/source-date-epoch/)), the INI frontend uses it for `created_at` instead of the wall clock. Library sync scripts can export this variable so IR files stay byte-stable when semantics are unchanged.
-
-## 9. Larger roadmap (optional)
-
-- **Library lockfile** — pins each model’s `content_hash` and digests of generated views; CI verifies them.
-- **`emit ini` round-trip** — product roadmap item; reduces manual dual maintenance of INI and other views.
-- **`ir_version` migrations** — when the IR schema bumps, migration tooling plus ADRs ([`ir-specification.md`](ir-specification.md) §5).
-- **Composite models** — dependency graph of scaffolds; composite content hash derived from constituents (Merkle-style).
-- **Signing / extended provenance** — optional fields for signer identity, git commit SHA, parent scaffold hash (policy and ADR when needed).
-
-## 10. Related documents
-
-- [`model-parser.md`](model-parser.md) — product scope and CLI overview.
-- [`ir-specification.md`](ir-specification.md) — IR shape and `content_hash` definition.
-- [`storing-mtk-models.md`](storing-mtk-models.md) — IR + generated `.jl` as durable artifacts.
-- [`language-strategy.md`](language-strategy.md) — Python/Julia split at the IR file boundary.

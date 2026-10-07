@@ -4,12 +4,6 @@ site_url: https://advanced-process-control.github.io/model-parser/
 repo_url: https://github.com/Advanced-Process-Control/model-parser
 edit_uri: edit/main/docs/
 
-# Session logs and maintainer-only release drafts are not part of the published site;
-# excluding them avoids mkdocs --strict failures on repo-relative links meant for GitHub viewers.
-exclude_docs: |
-  chatlogs/**
-  release-notes/**
-
 theme:
   name: material
   features:
@@ -40,30 +34,9 @@ plugins:
 
 nav:
   - Home: index.md
-  - Design:
-      - Product specification: design/model-parser.md
-      - IR specification: design/ir-specification.md
-      - Language strategy: design/language-strategy.md
-      - Storing MTK models: design/storing-mtk-models.md
-      - Model library & versioning: design/model-library-and-versioning.md
-  - Future work:
-      - Index: todo/index.md
-      - emit ini round-trip: todo/emit-ini-round-trip.md
-      - emit cpp (realtime): todo/emit-cpp-realtime-backend.md
-      - IR schema migrations: todo/ir-schema-migrations.md
-      - Parameter set contract: todo/parameter-set-contract-cli.md
-      - Conformance & parity: todo/conformance-fixtures-parity.md
-      - INI dimensions inference: todo/ini-dimensions-inference.md
-      - diff / bump hardening: todo/diff-bump-hardening.md
-  - Decisions:
-      - Index: decisions/index.md
-      - "0001: Python CLI + Julia backend": decisions/0001-python-cli-with-julia-backend.md
-      - "0002: Codegen over serialized System": decisions/0002-codegen-over-serialized-system.md
-      - "0003: Explicit expression IR": decisions/0003-explicit-expression-ir.md
-      - "0004: Target MTK v11 idioms": decisions/0004-target-mtk-v11-idioms.md
-      - "0005: CLI verbs parse / emit": decisions/0005-cli-verbs-parse-emit.md
-      - "0006: Julia numerical RHS view": decisions/0006-julia-numerical-rhs-view.md
-      - "0007: Python numerical view": decisions/0007-python-numerical-view.md
+  - CLI and generated views: cli.md
+  - IR specification: design/ir-specification.md
+  - Model library & versioning: design/model-library-and-versioning.md
   - API reference: api.md
   - Deployment: deployment/ci-cd.md
 

@@ -63,5 +63,4 @@ viewing deployment status.
 
 Bump `version` in `pyproject.toml` and `__version__` in `src/model_parser/__init__.py`,
 merge to the default branch, then create an **annotated** tag on that commit and
-push the tag. See [`AGENTS.md`](https://github.com/Advanced-Process-Control/model-parser/blob/main/AGENTS.md)
-for the full release policy.
+push the tag.

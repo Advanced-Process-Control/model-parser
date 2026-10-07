@@ -17,8 +17,7 @@ the sole truth in the INI `[Parameters]` section.
 ## Scope hints
 
 - **Contract first** (schema, examples, ADR); `model-parser` might only validate
-  or `inspect` parameter sets, or a separate small tool might own the file—keep
-  scope guardrails in mind (repository root `AGENTS.md`).
+  or `inspect` parameter sets, or a separate small tool might own the file.
 - INI frontend might grow optional “declarations only” mode later; not required
   for the first parameter-set slice.
 

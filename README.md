@@ -117,5 +117,4 @@ Schema, semantic & profile validation, IR↔backend lowering/codegen.
 
 **Out of scope:** parameter identification, scenario execution, simulation
 result storage, controller synthesis, deployment. Those are sibling tools that
-*consume* the IR. The parser stays small (see
-[`AGENTS.md`](AGENTS.md) scope guardrails).
+*consume* the IR. The parser stays small.
